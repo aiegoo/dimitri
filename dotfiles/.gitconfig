@@ -1,0 +1,36 @@
+[user]
+	name = aiegoo
+	email = eozz21@gmail.com
+
+[diff]
+        tool = vimdiff
+    [difftool "vimdiff"]
+        cmd = code --wait --new-window --diff $LOCAL $REMOTE
+        prompt = false
+
+[alias]
+	a = !git config --global
+	alias = config --get-regexp ^alias\\.
+	amd = !git add -A && git commit --amend --no-edit
+	sub = !git submodule update --init --recursive
+	p = !git push origin $(git rev-parse --abbrev-ref HEAD)
+	lg = !git log --all --graph --oneline --date=short --pretty=format:\"%C(yellow)%h%Creset%C(red)%C(bold)%d%Creset%C(white)(%cd)%Creset %s\"
+	unstream = !git branch --unset-upstream
+	upstream = !git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD)
+	adds = !git add -A :/ && git commit -m
+	subclone = !git clone --recurse-submodules -j8
+	reedit = "!f() { $(git config core.editor) -- $(git diff --name-only $1); }; f"
+	edit-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; code `f`"
+	add-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
+	lc = !git log ORIG_HEAD.. --stat --no-merges
+	uncommit = !git reset --soft HEAD~1 && git reset HEAD
+	commitagain = !git commit -c ORIG_HEAD
+	bp = big-picture
+	history = !git rev-list --all
+	lt = !git log --stat --pretty=\"format:%h%an%ai%f\"
+	pr = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+	pr-clean = "pr-clean !git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref; do branch=${ref#refs/heads/} ; git branch -D $branch ;"
+	files = !git diff-tree --no-commit-id --name-only -r
+        find = !git log --pretty=\"format:%Cgreen%H %Cblue%s\" --name-status --grep
+	filter = !git filter-branch --index-filter \"git rm --cached -f -r --ignore-unmatch\" --tag-name-filter cat -- --all
+
